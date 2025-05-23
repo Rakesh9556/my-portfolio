@@ -1,0 +1,20 @@
+#root {
+  /* max-width: 1280px; */
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.color-empty {
+  fill: #e5e7eb; /* Tailwind gray-300 */
+}
+.color-scale-1 {
+  fill: #bbf7d0; /* green-200 */
+}
+.color-scale-2 {
+  fill: #86efac; /* green-400 */
+}
+.color-scale-3 {
+  fill: #4ade80; /* green-600 */
+}
