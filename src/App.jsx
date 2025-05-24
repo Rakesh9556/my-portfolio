@@ -12,25 +12,28 @@ function App() {
   return (
     <>
       <GridBackground />
-      
-      <div className="flex justify-between items-start px-4 w-full mx-auto">
-        {/* Left side content */}
-        <div className="flex flex-row gap-x-4">
-          <ProfileCard />
-          <div className='flex flex-col'>
-            <Projects />
-            <div className="flex gap-x-3">
-              <SkillSection />
-              <CertificateSection />
-            </div>
-            <div className="mt-4">
-              <GitHubContributionHeatmap username="Rakesh9556" />
+
+      {/* Absolute Dark Mode Toggle in top-right */}
+      <div className="absolute top-4 right-4 z-50">
+        <DarkModeToggle />
+      </div>
+
+      <div className="w-full px-4 md:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row justify-between gap-6">
+          <div className="flex flex-col lg:flex-row gap-6 w-full">
+            <ProfileCard />
+            <div className="flex flex-col flex-1">
+              <Projects />
+              <div className="flex flex-col lg:flex-row gap-4">
+                <SkillSection />
+                <CertificateSection />
+              </div>
+              <div className="mt-4">
+                <GitHubContributionHeatmap username="Rakesh9556" />
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Right side toggle */}
-        <DarkModeToggle />
       </div>
 
       <FloatingDock />

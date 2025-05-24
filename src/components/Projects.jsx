@@ -8,7 +8,7 @@ const projects = [
         languages: ["Java"],
         techUsed: ["Spring Boot", "MySQL", "REST APIs", "JWT", "Maven"],
         duration: "Feb 2024 – May 2024",
-        link: "business-management",
+        link: "business-management"
     },
     {
         title: "University Management System",
@@ -42,8 +42,8 @@ export default function Projects() {
   }
 
   return (
-    <div className="w-full max-w-7xl h-fit mx-auto bg-gray-300 dark:bg-[#0d1117] rounded-[22px] p-8 md:p-4">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Projects</h2>
+    <div className="w-full max-w-5xl h-fit mt-4 md:mt-0 bg-gray-300 dark:bg-[#0d1117] rounded-[22px] p-3">
+      <h2 className="text-lg md:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2 md:mb-4">Projects</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4">
         {projects.map((proj, idx) => (

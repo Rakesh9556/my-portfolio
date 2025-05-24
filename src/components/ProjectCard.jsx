@@ -1,40 +1,37 @@
 import React, { useEffect } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { techIconMap, techStylesMap } from "./techIcons"; // adjust path if needed
 
 export default function ProjectCard({ project, isExpanded, onExpand }) {
   const collapsedHeight = 140;
   const expandedHeight = 340;
   const threshold = 50;
 
-  // Spring with industry-smooth config
   const [{ height, scale }, api] = useSpring(() => ({
     height: collapsedHeight,
     scale: 1,
     config: {
-      tension: 120,    // softer spring for smoothness
-      friction: 20,    // moderate friction for gentle slow down
+      tension: 120,
+      friction: 20,
       mass: 1,
-      clamp: false,    // natural bounce
+      clamp: false,
     },
   }));
 
   useEffect(() => {
-    // Animate height smoothly on expand/collapse
     api.start({ height: isExpanded ? expandedHeight : collapsedHeight, immediate: false });
   }, [isExpanded, api]);
 
   const bind = useDrag(
-    ({ last, movement: [, my], velocity: [, vy], direction: [, dy], dragging }) => {
+    ({ last, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
       if (!last) {
-        // Live drag - immediate height change & subtle scale up
         const newHeight = Math.min(
           Math.max(collapsedHeight, collapsedHeight + my),
           expandedHeight
         );
         api.start({ height: newHeight, scale: 1.03, immediate: true });
       } else {
-        // On drag release: decide expand/collapse with velocity & direction
         const shouldExpand = my > threshold || (vy > 0.3 && dy > 0);
         const shouldCollapse = my < -threshold || (vy > 0.3 && dy < 0);
 
@@ -63,7 +60,7 @@ export default function ProjectCard({ project, isExpanded, onExpand }) {
   return (
     <animated.div
       {...bind()}
-      className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-md w-full overflow-hidden touch-none select-none flex flex-col"
+      className="relative rounded-2xl shadow-md w-full overflow-hidden touch-none select-none flex flex-col bg-gray-300 dark:bg-gray-800"
       style={{
         height,
         cursor: "grab",
@@ -73,30 +70,45 @@ export default function ProjectCard({ project, isExpanded, onExpand }) {
       }}
       onClick={handleClick}
     >
-      <div className="p-4 pt-3 text-left flex flex-col flex-grow">
+      <div className="p-4 text-left flex flex-col flex-grow">
         <div className="flex justify-between items-center mb-1">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-300">
+          <h3 className="text-xs md:text-lg font-semibold text-gray-800 dark:text-blue-300">
             {project.title}
           </h3>
-          <span className="text-sm text-gray-500 dark:text-gray-300">{project.duration}</span>
+          <span className="text-[10px] md:text-sm italic text-gray-500 dark:text-gray-300">
+            {project.duration}
+          </span>
         </div>
         <p className="text-gray-700 dark:text-gray-300 text-sm">{project.description}</p>
 
-          <div className="flex flex-wrap gap-2 mt-3">
-            {project.techUsed.map((tech, i) => (
+        {/* Tech Icons */}
+        <div className="flex flex-wrap gap-2 mt-3 items-center justify-start">
+          {project.techUsed.map((tech, i) => {
+            const styles = techStylesMap[tech] || {
+              bg: "bg-gray-100 dark:bg-gray-700",
+              text: "text-gray-800 dark:text-gray-300",
+              border: "border-gray-800 dark:border-gray-300",
+            };
+
+            return (
               <span
                 key={i}
-                className="bg-green-100 dark:bg-green-700 text-xs px-2 py-1 rounded text-green-800 dark:text-green-100"
+                className={`flex font-bold items-center justify-center gap-1 px-1 py-1 rounded-full border ${styles.bg} ${styles.text} ${styles.border} text-[10px] md:text-xs`}
               >
+                {techIconMap[tech] || null}
                 {tech}
               </span>
-            ))}
-          </div>
+            );
+          })}
+        </div>
 
         {isExpanded && (
           <div className="mt-4 flex-grow">
-            <div className="text-sm text-gray-600 dark:text-gray-300">{project.fullDescription}</div>
-
+            {project.fullDescription && (
+              <div className="text-sm text-gray-600 dark:text-gray-300">
+                {project.fullDescription}
+              </div>
+            )}
             <div className="mt-3">
               <p className="text-sm font-medium text-gray-700 dark:text-gray-400">Languages:</p>
               <div className="flex flex-wrap gap-2 mt-1">
@@ -114,16 +126,12 @@ export default function ProjectCard({ project, isExpanded, onExpand }) {
         )}
       </div>
 
-      {/* Bottom dots */}
+      {/* Bottom Indicator */}
       <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-1">
-            {[...Array(3)].map((_, idx) => (
-                <span
-                key={idx}
-                className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600"
-                ></span>
-            ))}
+        {[...Array(3)].map((_, idx) => (
+          <span key={idx} className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600"></span>
+        ))}
       </div>
-
     </animated.div>
   );
 }
